@@ -4,11 +4,6 @@ import './App.css';
 import './note-item';
 const BASE_URL = 'https://notes-app-ae7v.onrender.com';
 const { v4 } = require('uuid');
-type Note = {
-  id: string;
-  title: string;
-  content: string;
-};
 
 const initialNote = {
   id: '',
@@ -16,10 +11,10 @@ const initialNote = {
   content: '',
 };
 const App = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [currentNote, setCurrentNote] = useState<Note | null>(null);
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState(null);
+  const [title, setTitle] = useState ("");
+  const [content, setContent] = useState("");
   useEffect(() => {
     fetch(`${BASE_URL}/notes`, {
       headers: {
@@ -32,7 +27,7 @@ const App = () => {
     //       console.log(res);
     //     });
   }, []);
-  const handleAddNote = (event: React.FormEvent): void => {
+  const handleAddNote = (event) => {
     event.preventDefault();
     if (currentNote) {
       handleUpdateNote(event);
@@ -41,7 +36,7 @@ const App = () => {
     if (title.trim() === '' || content.trim() === '') {
       return;
     }
-    const note: Note = {
+    const note = {
       title,
       content,
       id: v4(),
@@ -63,22 +58,22 @@ const App = () => {
       },
     }).then((res) => res.json());
   };
-  const handleCancel = (e: React.FormEvent): void => {
+  const handleCancel = (e) => {
     setTitle('');
     setContent('');
     setCurrentNote(null);
   };
-  const handleUpdateNote = (event: React.FormEvent): void => {
+  const handleUpdateNote = (event) => {
     event.preventDefault();
     if (!currentNote) {
       return;
     }
-    const updatedNote: Note = {
+    const updatedNote = {
       id: currentNote.id,
       title,
       content,
     };
-    const updatedNotes = notes.map((note: Note): any =>
+    const updatedNotes = notes.map((note) =>
       note.id === currentNote.id ? updatedNote : note
     );
     setNotes(updatedNotes);
@@ -87,13 +82,13 @@ const App = () => {
     setCurrentNote(null);
   };
 
-  const handleNoteClick = (note: Note): void => {
+  const handleNoteClick = (note) => {
     setCurrentNote(note);
     setTitle(note.title);
     setContent(note.content);
   };
 
-  const handleNoteDelete = (event: React.FormEvent, noteId: string) => {
+  const handleNoteDelete = (event, noteId) => {
     event.stopPropagation();
     setNotes(notes.filter((note) => note.id !== noteId));
 
@@ -115,8 +110,8 @@ const App = () => {
           value={title}
           placeholder="title"
           required
-          onChange={(e: React.FormEvent) => {
-            setTitle((e.target as HTMLInputElement).value);
+          onChange={(e) => {
+            setTitle(e.target.value);
           }}
         ></input>
         <textarea
@@ -124,8 +119,8 @@ const App = () => {
           placeholder="Content"
           rows={10}
           required
-          onChange={(e: React.FormEvent) => {
-            setContent((e.target as HTMLInputElement).value);
+          onChange={(e) => {
+            setContent(e.target.value);
           }}
         ></textarea>
         {currentNote ? (
